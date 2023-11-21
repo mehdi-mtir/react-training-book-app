@@ -1,5 +1,9 @@
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {BooksContext} from '../App';
+
 const ListBooks = (props)=>{
+  let books = useContext(BooksContext);
   const navigate = useNavigate();
   return (
     <>
@@ -18,7 +22,7 @@ const ListBooks = (props)=>{
       </thead>
       <tbody>
         {
-          props.books.map(book => <tr key={book.id}>
+          books.map(book => <tr key={book.id}>
             <th scope="row">{book.id}</th>
             <td>{book.title}</td>
             <td>{book.author}</td>

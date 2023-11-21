@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import ListBooks from "./components/ListBooks";
 import AddBook from "./components/AddBook";
 import EditBook from "./components/EditBook";
 import { Routes, Route, useNavigate } from "react-router-dom";
+
+export const BooksContext = createContext();
 
 function App() {
   const booksInit = [
@@ -11,6 +13,7 @@ function App() {
     {id : 3, title : "Atomic Habits", author : "James clear", price : "40"},
   ]
   const navigate = useNavigate();
+
   const [books, setBooks] = useState(window.localStorage.getItem('books')?JSON.parse(window.localStorage.getItem('books')):booksInit);
 
   useEffect(()=>{
@@ -44,25 +47,25 @@ function App() {
   return (
     <div className="container">
       <h1>Application de gestion des livres</h1>
-      <Routes>
-        <Route
-          path="/books"
-          exact
-          element={<ListBooks
-            books={[...books]}
-            deleteBookRef= { deleteBook } />
-          }
-        />
-        <Route
-          path="/books/add"
-          exact
-          element={<AddBook addBookRef={addBook} />} />
-        <Route
-          path="/books/edit/:id"
-          exact
-          element={<EditBook editBookRef={editBook} books={[...books]}/>} />
-      </Routes>
-
+      <BooksContext.Provider value={books}>
+        <Routes>
+          <Route
+            path="/books"
+            exact
+            element={<ListBooks
+              deleteBookRef= { deleteBook } />
+            }
+          />
+          <Route
+            path="/books/add"
+            exact
+            element={<AddBook addBookRef={addBook} />} />
+          <Route
+            path="/books/edit/:id"
+            exact
+            element={<EditBook editBookRef={editBook} />} />
+        </Routes>
+      </BooksContext.Provider>
 
     </div>
   );

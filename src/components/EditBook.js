@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import {BooksContext} from '../App';
 
 const EditBook = (props)=>{
+  let books = useContext(BooksContext);
   const {id} = useParams();
-  const [book, setBook] = useState(props.books.find(b=>b.id === +id));
+  const [book, setBook] = useState(books.find(b=>b.id === +id));
 
   const onChangeHandler = ({target})=>{
     setBook({...book, [target.name] : target.value});
