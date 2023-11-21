@@ -15,12 +15,18 @@ function App() {
     setAction(newAction);
   }
 
+  const addBook = (book)=>{
+    book.id = books[books.length - 1].id +1
+    setBooks([...books, book]);
+    changeAction('');
+  }
+
   return (
     <div className="container">
       <h1>Application de gestion des livres</h1>
       <ListBooks books={books} changeActionRef= {changeAction} />
       {
-        action === 'add' && <AddBook />
+        action === 'add' && <AddBook addBookRef={addBook} />
       }
     </div>
   );
