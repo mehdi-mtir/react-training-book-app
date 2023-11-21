@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const EditBook = (props)=>{
   const [book, setBook] = useState(props.currentBook);
-  console.log(props.currentBook);
+  //console.log(props.currentBook);
 
   useEffect(()=>{
     setBook(props.currentBook);
@@ -13,7 +13,7 @@ const EditBook = (props)=>{
   }
   const onSubmitHandler = (event)=>{
     event.preventDefault();
-    props.addBookRef(book);
+    props.editBookRef(book);
   }
 
   return <>

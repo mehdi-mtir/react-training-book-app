@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListBooks from "./components/ListBooks";
 import AddBook from "./components/AddBook";
 import EditBook from "./components/EditBook";
@@ -9,9 +9,14 @@ function App() {
     {id : 2, title : "Power of habits", author : "Charles Duhigg", price : "30"},
     {id : 3, title : "Atomic Habits", author : "James clear", price : "40"},
   ]
-  const [books, setBooks] = useState(booksInit);
+
+  const [books, setBooks] = useState(window.localStorage.getItem('books')?JSON.parse(window.localStorage.getItem('books')):booksInit);
   const [action, setAction] = useState('');
   const [currentBook, setCurrentBook] = useState({})
+
+  useEffect(()=>{
+    window.localStorage.setItem('books', JSON.stringify(books));
+  }, [books]);
 
   const changeAction = (newAction)=>{
     setAction(newAction);
@@ -29,13 +34,31 @@ function App() {
   }
 
   const editBook = (book)=>{
-    console.log(JSON.stringify(book));
+    //console.log(JSON.stringify(book));
+    setBooks(
+      books.map(b=>b.id===book.id?book:b)
+    )
+    changeAction('');
+  }
+
+  const deleteBook = (id)=>{
+    if(window.confirm('Êtes-vous sûre de vouloir supprimer le livre?')){
+      setBooks(
+        books.filter(book=>book.id !== id)
+      )
+    }
+
+
   }
 
   return (
     <div className="container">
       <h1>Application de gestion des livres</h1>
-      <ListBooks books={books} changeActionRef= {changeAction} showEditBookRef={showEditBook} />
+      <ListBooks
+        books={[...books]}
+        changeActionRef= { changeAction }
+        showEditBookRef={ showEditBook }
+        deleteBookRef= { deleteBook } />
       {
         action === 'add' && <AddBook addBookRef={addBook} />
       }

@@ -23,7 +23,7 @@ const ListBooks = (props)=>{
             <td>{book.author}</td>
             <td>{book.price}</td>
             <td><button className="btn btn-primary" onClick={()=>props.showEditBookRef({...book})}>Editer</button></td>
-            <td><button className="btn btn-danger">Supprimer</button></td>
+            <td><button className="btn btn-danger" onClick={()=>props.deleteBookRef(book.id)}>Supprimer</button></td>
           </tr>)
         }
 
