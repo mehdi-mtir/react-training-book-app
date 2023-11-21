@@ -1,9 +1,10 @@
-
+import { Link, useNavigate } from "react-router-dom";
 const ListBooks = (props)=>{
+  const navigate = useNavigate();
   return (
     <>
       <h2>Liste des livres</h2>
-      <button className="btn btn-success" onClick={()=>props.changeActionRef('add')}>Ajouter un livre</button>
+      <Link className="btn btn-success" to="/books/add" >Ajouter un livre</Link>
       <table className="table table-striped">
       <thead>
         <tr>
@@ -22,7 +23,7 @@ const ListBooks = (props)=>{
             <td>{book.title}</td>
             <td>{book.author}</td>
             <td>{book.price}</td>
-            <td><button className="btn btn-primary" onClick={()=>props.showEditBookRef({...book})}>Editer</button></td>
+            <td><button className="btn btn-primary" onClick={()=>navigate(`/books/edit/${book.id}`)}>Editer</button></td>
             <td><button className="btn btn-danger" onClick={()=>props.deleteBookRef(book.id)}>Supprimer</button></td>
           </tr>)
         }

@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 const EditBook = (props)=>{
-  const [book, setBook] = useState(props.currentBook);
-  //console.log(props.currentBook);
-
-  useEffect(()=>{
-    setBook(props.currentBook);
-  }, [props]);
+  const {id} = useParams();
+  const [book, setBook] = useState(props.books.find(b=>b.id === +id));
 
   const onChangeHandler = ({target})=>{
     setBook({...book, [target.name] : target.value});

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ListBooks from "./components/ListBooks";
 import AddBook from "./components/AddBook";
 import EditBook from "./components/EditBook";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 function App() {
   const booksInit = [
@@ -9,28 +10,17 @@ function App() {
     {id : 2, title : "Power of habits", author : "Charles Duhigg", price : "30"},
     {id : 3, title : "Atomic Habits", author : "James clear", price : "40"},
   ]
-
+  const navigate = useNavigate();
   const [books, setBooks] = useState(window.localStorage.getItem('books')?JSON.parse(window.localStorage.getItem('books')):booksInit);
-  const [action, setAction] = useState('');
-  const [currentBook, setCurrentBook] = useState({})
 
   useEffect(()=>{
     window.localStorage.setItem('books', JSON.stringify(books));
   }, [books]);
 
-  const changeAction = (newAction)=>{
-    setAction(newAction);
-  }
-
-  const showEditBook = (book)=>{
-    setCurrentBook({...book});
-    changeAction('edit');
-  }
-
   const addBook = (book)=>{
     book.id = books[books.length - 1].id +1
     setBooks([...books, book]);
-    changeAction('');
+    navigate("/books");
   }
 
   const editBook = (book)=>{
@@ -38,7 +28,7 @@ function App() {
     setBooks(
       books.map(b=>b.id===book.id?book:b)
     )
-    changeAction('');
+    navigate("/books");
   }
 
   const deleteBook = (id)=>{
@@ -54,17 +44,25 @@ function App() {
   return (
     <div className="container">
       <h1>Application de gestion des livres</h1>
-      <ListBooks
-        books={[...books]}
-        changeActionRef= { changeAction }
-        showEditBookRef={ showEditBook }
-        deleteBookRef= { deleteBook } />
-      {
-        action === 'add' && <AddBook addBookRef={addBook} />
-      }
-{
-        action === 'edit' && <EditBook editBookRef={editBook} currentBook={{...currentBook}} />
-      }
+      <Routes>
+        <Route
+          path="/books"
+          exact
+          element={<ListBooks
+            books={[...books]}
+            deleteBookRef= { deleteBook } />
+          }
+        />
+        <Route
+          path="/books/add"
+          exact
+          element={<AddBook addBookRef={addBook} />} />
+        <Route
+          path="/books/edit/:id"
+          exact
+          element={<EditBook editBookRef={editBook} books={[...books]}/>} />
+      </Routes>
+
 
     </div>
   );
