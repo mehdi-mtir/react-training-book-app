@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ListBooks from "./components/ListBooks";
 import AddBook from "./components/AddBook";
+import EditBook from "./components/EditBook";
 
 function App() {
   const booksInit = [
@@ -10,9 +11,15 @@ function App() {
   ]
   const [books, setBooks] = useState(booksInit);
   const [action, setAction] = useState('');
+  const [currentBook, setCurrentBook] = useState({})
 
   const changeAction = (newAction)=>{
     setAction(newAction);
+  }
+
+  const showEditBook = (book)=>{
+    setCurrentBook({...book});
+    changeAction('edit');
   }
 
   const addBook = (book)=>{
@@ -21,13 +28,21 @@ function App() {
     changeAction('');
   }
 
+  const editBook = (book)=>{
+    console.log(JSON.stringify(book));
+  }
+
   return (
     <div className="container">
       <h1>Application de gestion des livres</h1>
-      <ListBooks books={books} changeActionRef= {changeAction} />
+      <ListBooks books={books} changeActionRef= {changeAction} showEditBookRef={showEditBook} />
       {
         action === 'add' && <AddBook addBookRef={addBook} />
       }
+{
+        action === 'edit' && <EditBook editBookRef={editBook} currentBook={{...currentBook}} />
+      }
+
     </div>
   );
 }

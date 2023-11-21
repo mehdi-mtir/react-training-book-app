@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const AddBook = (props)=>{
-  const [book, setBook] = useState({title : '', author : '', price : ''});
+const EditBook = (props)=>{
+  const [book, setBook] = useState(props.currentBook);
+  console.log(props.currentBook);
+
+  useEffect(()=>{
+    setBook(props.currentBook);
+  }, [props]);
+
   const onChangeHandler = ({target})=>{
     setBook({...book, [target.name] : target.value});
   }
   const onSubmitHandler = (event)=>{
     event.preventDefault();
     props.addBookRef(book);
-    //setBook({title : '', author : '', price : ''});
   }
+
   return <>
-    <h2>Ajouter un livre</h2>
+    <h2>Editer le livre ...</h2>
       <form onSubmit={onSubmitHandler}>
         <div className="mb-3">
           <label htmlFor="title" className="form-label">Titre</label>
@@ -30,4 +36,4 @@ const AddBook = (props)=>{
   </>
 }
 
-export default AddBook;
+export default EditBook;
