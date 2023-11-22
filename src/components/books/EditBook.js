@@ -1,18 +1,39 @@
-/*import { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
-import {BooksContext} from '../App';
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const EditBook = (props)=>{
-  let books = useContext(BooksContext);
+const EditBook = ()=>{
+  const navigate = useNavigate()
   const {id} = useParams();
-  const [book, setBook] = useState(books.find(b=>b.id === +id));
+  const [book, setBook] = useState({title : '', author : '', price : ''});
+
+  useEffect(
+    ()=>{
+      const getBook = async ()=>{
+        const reponse = await fetch("http://localhost:3000/books/"+id);
+        const book = await reponse.json();
+        setBook(book);
+      }
+      getBook();
+    }
+  , [])
 
   const onChangeHandler = ({target})=>{
     setBook({...book, [target.name] : target.value});
   }
   const onSubmitHandler = (event)=>{
     event.preventDefault();
-    props.editBookRef(book);
+    const requestOptions = {
+      method : 'PUT',
+      headers : {'content-type' : 'application/json'},
+      body : JSON.stringify(book)
+    }
+    fetch("http://localhost:3000/books/"+id, requestOptions)
+      .then(
+        reponse => navigate("/books")
+      )
+      .catch(
+        error => console.log(error)
+      )
   }
 
   return <>
@@ -36,4 +57,3 @@ const EditBook = (props)=>{
 }
 
 export default EditBook;
-*/

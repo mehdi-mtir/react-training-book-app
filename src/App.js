@@ -1,7 +1,7 @@
 //import { useEffect, useState} from "react";
-import ListBooks from "./components/ListBooks";
-import AddBook from "./components/AddBook";
-//import EditBook from "./components/EditBook";
+import ListBooks from "./components/books/ListBooks";
+import AddBook from "./components/books/AddBook";
+import EditBook from "./components/books/EditBook";
 import { Routes, Route } from "react-router-dom";
 
 //export const BooksContext = createContext();
@@ -61,10 +61,10 @@ function App() {
             path="/books/add"
             exact
             element={<AddBook />} />
-          {/*<Route
+          <Route
             path="/books/edit/:id"
             exact
-            element={<EditBook />} />*/}
+            element={<EditBook />} />
           </Routes>
     </div>
   );

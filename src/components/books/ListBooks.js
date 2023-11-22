@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const ListBooks = (props)=>{
+  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
 
   useEffect(
@@ -15,8 +16,25 @@ const ListBooks = (props)=>{
     }
   , [])
 
+  const deleteBook = (id)=>{
+    if(window.confirm("Êtes-vou sûre de vouloir supprimer le livre?")){
+      const requestOptions = {
+        method : 'DELETE'
+      }
+      fetch("http://localhost:3000/books/"+id, requestOptions)
+        .then(
+          reponse => setBooks(books.filter(b=>b.id!==id))
+        )
+        .catch(
+          erreur => console.log(erreur)
+        )
+    }
+
+
+  }
+
   ///let books = useContext(BooksContext);
-  const navigate = useNavigate();
+
   return (
     <>
       <h2>Liste des livres</h2>
@@ -40,7 +58,7 @@ const ListBooks = (props)=>{
             <td>{book.author}</td>
             <td>{book.price}</td>
             <td><button className="btn btn-primary" onClick={()=>navigate(`/books/edit/${book.id}`)}>Editer</button></td>
-            <td><button className="btn btn-danger" onClick={()=>props.deleteBookRef(book.id)}>Supprimer</button></td>
+            <td><button className="btn btn-danger" onClick={()=>{deleteBook(book.id)}}>Supprimer</button></td>
           </tr>)
         }
 
