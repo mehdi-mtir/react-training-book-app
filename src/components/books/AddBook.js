@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import apiAuthors from "../authors/apiAuthors";
 
 const AddBook = ()=>{
   const navigate = useNavigate();
-  const [book, setBook] = useState({title : '', author : '', price : ''});
+  const [book, setBook] = useState({title : '', authorId : 0, price : ''});
+  const [authors, setAuthors] = useState([]);
+
+  useEffect(
+    ()=>{
+        apiAuthors.getAuthors().then(
+          authors => setAuthors(authors)
+        )
+    }
+  , [])
+
   const onChangeHandler = ({target})=>{
-    setBook({...book, [target.name] : target.value});
+    if(target.name === "authorId")
+      setBook({...book, [target.name] : +target.value});
+    else
+      setBook({...book, [target.name] : target.value});
   }
   const onSubmitHandler = (event)=>{
     event.preventDefault();
@@ -30,8 +44,16 @@ const AddBook = ()=>{
           <input type="text" className="form-control" id="title" name="title" value= {book.title} onChange={onChangeHandler} />
         </div>
         <div className="mb-3">
-          <label htmlFor="author" className="form-label">Auteur</label>
-          <input type="text" className="form-control" id="author" name="author" value= {book.author} onChange={onChangeHandler} />
+          <label htmlFor="authorId" className="form-label">Auteur</label>
+          <select id="authorId" name="authorId" className="form-control" value= {book.authorId} onChange={onChangeHandler}  >
+            <option></option>
+            {
+              authors.map(
+                author=><option key={author.id} value={author.id}>{author.firstname} {author.name}</option>
+              )
+            }
+          </select>
+          {/*<input type="text" className="form-control" id="author" name="author" value= {book.author} onChange={onChangeHandler} />*/}
         </div>
         <div className="mb-3">
           <label htmlFor="price" className="form-label">Prix</label>

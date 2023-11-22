@@ -3,6 +3,9 @@ import ListBooks from "./components/books/ListBooks";
 import AddBook from "./components/books/AddBook";
 import EditBook from "./components/books/EditBook";
 import { Routes, Route } from "react-router-dom";
+import ListAuthors from "./components/authors/ListAuthors";
+import AddAuthors from "./components/authors/AddAuthors";
+import EditAuthors from "./components/authors/EditAuthors";
 
 //export const BooksContext = createContext();
 
@@ -52,7 +55,7 @@ function App() {
       <h1>Application de gestion des livres</h1>
         <Routes>
           <Route
-            path="/books"
+            path="books"
             exact
             element={<ListBooks />
             }
@@ -65,7 +68,16 @@ function App() {
             path="/books/edit/:id"
             exact
             element={<EditBook />} />
-          </Routes>
+          <Route path="authors" element={<ListAuthors/>}/>
+          {/*
+          <Route path="authors">
+              <Route index element={<ListAuthors/>} />
+              <Route path="add" element={<AddAuthors/>} />
+              <Route path="edit/:id" element={<EditAuthors/>} />
+          </Route>
+          */}
+        </Routes>
+
     </div>
   );
 }

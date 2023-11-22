@@ -15,7 +15,7 @@ const EditBook = ()=>{
       }
       getBook();
     }
-  , [])
+  , [id])
 
   const onChangeHandler = ({target})=>{
     setBook({...book, [target.name] : target.value});
