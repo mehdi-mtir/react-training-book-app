@@ -1,14 +1,26 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const AddBook = (props)=>{
+const AddBook = ()=>{
+  const navigate = useNavigate();
   const [book, setBook] = useState({title : '', author : '', price : ''});
   const onChangeHandler = ({target})=>{
     setBook({...book, [target.name] : target.value});
   }
   const onSubmitHandler = (event)=>{
     event.preventDefault();
-    props.addBookRef(book);
-    //setBook({title : '', author : '', price : ''});
+    const requestOptions = {
+      method : 'POST',
+      headers : {'content-type' : 'application/json'},
+      body : JSON.stringify(book)
+    }
+    fetch("http://localhost:3000/books", requestOptions)
+      .then(
+        reponse => navigate("/books")
+      )
+      .catch(
+        error => console.log(error)
+      )
   }
   return <>
     <h2>Ajouter un livre</h2>

@@ -1,9 +1,21 @@
-import { useContext } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {BooksContext} from '../App';
 
 const ListBooks = (props)=>{
-  let books = useContext(BooksContext);
+  const [books, setBooks] = useState([]);
+
+  useEffect(
+    ()=>{
+      async function getData(){
+        const reponse = await fetch('http://localhost:3000/books');
+        const booksList = await reponse.json();
+        setBooks(booksList);
+      }
+      getData();
+    }
+  , [])
+
+  ///let books = useContext(BooksContext);
   const navigate = useNavigate();
   return (
     <>
